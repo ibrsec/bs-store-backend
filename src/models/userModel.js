@@ -2,6 +2,7 @@
 
 const mongoose = require("mongoose");
 const passwordEncrypter = require("../helpers/passwordEncrypter");
+const validatePassword = require("../helpers/validatePassword");
 
 const userSchema = new mongoose.Schema(
   {
@@ -11,6 +12,7 @@ const userSchema = new mongoose.Schema(
       unique: true,
       requried: true,
       lowercase: true,
+      maxLength:70,
       match: [/.+@.+\..+/, 'Please fill a valid email address'],
     },
     password: {
@@ -18,10 +20,18 @@ const userSchema = new mongoose.Schema(
         trim:true,
         required:true,
         set: (password)=> {
-            if(validatePassword(password)){
+            if(validatePassword(password)){ 
                 return passwordEncrypter(password);
             }else{
-                throw new Error('Password must be between 8 and 16 characters long, and include at least one uppercase letter, one lowercase letter, one number, and one special character - [.?!@#$%&*]')
+              return 'Invalid password type - Password must be between 8 and 16 characters long, and include at least one uppercase letter, one lowercase letter, one number, and one special character - [.?!@#$%&*]'
+
+            }
+        },
+        validate : (password) => {
+            if(password==='Invalid password type - Password must be between 8 and 16 characters long, and include at least one uppercase letter, one lowercase letter, one number, and one special character - [.?!@#$%&*]'){
+              return false
+            }else{
+              return true;
             }
         }
 
@@ -30,10 +40,5 @@ const userSchema = new mongoose.Schema(
   { collection: "users", timestamps: true }
 );
 
-module.exports = mongoose.model("User", userSchema);
+module.exports.User = mongoose.model("User", userSchema);
 
-
-function validatePassword(password) {
-    const regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[.?!@#$%&*])[A-Za-z\d.?!@#$%&*]{8,16}$/;
-    return regex.test(password);
-}

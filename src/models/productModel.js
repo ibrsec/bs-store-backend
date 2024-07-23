@@ -1,11 +1,11 @@
 "use strict";
 
-
 const mongoose = require("mongoose");
+const Customerror = require("../helpers/CustomError");
 
 const productSchema = new mongoose.Schema(
   {
-    category: {
+    categoryId: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Category",
       required: true,
@@ -26,7 +26,8 @@ const productSchema = new mongoose.Schema(
       type: Number,
       required: true,
       min: 0,
-      max: 1000000,
+      max: 10_000_000,
+     
     },
     discountPercentage: {
       type: Number,
@@ -43,7 +44,7 @@ const productSchema = new mongoose.Schema(
     stock: {
       type: Number,
       min: 0,
-      max: 10000000,
+      max: 1_000_000,
       default: 0,
     },
     brand: {
@@ -57,10 +58,8 @@ const productSchema = new mongoose.Schema(
       trim: true,
       maxLength: 1000,
       required: true,
-      validate: [
-        (value) => value.startsWith("https://") || value.startsWith("http://"),
-        "Invalid Url!",
-      ],
+      validate: 
+        [(value) => value.startsWith("https://") || value.startsWith("http://"),"Invalid URL!"]
     },
     images: {
       type: [String],
@@ -90,4 +89,4 @@ const productSchema = new mongoose.Schema(
   }
 );
 
-module.exports = mongoose.model("Product", productSchema);
+module.exports.Product = mongoose.model("Product", productSchema);
