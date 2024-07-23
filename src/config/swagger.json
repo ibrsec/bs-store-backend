@@ -16,7 +16,7 @@
     },
     "servers": [
       {
-        "url": "http://localhost:1000"
+        "url": "https://b-store-backend.vercel.app/"
       }
     ],
     "components": {
