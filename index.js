@@ -11,6 +11,7 @@ require('dotenv').config();
 const swJsonDoc = require("swagger-jsdoc");
 const swaggerUi = require("swagger-ui-express");
 const path = require('path');
+const validateToken = require('./src/middlewares/validateTokenHandler');
 
 
 /* ----------------------------------- app ---------------------------------- */
@@ -21,6 +22,7 @@ require('./src/config/dbConnection')();
 
 /* --------------------------------- swagger -------------------------------- */
 const options = require('./src/config/swagger.json');
+const adminAuthentication = require('./src/middlewares/adminAuthentication');
 const swaggerSpecs = swJsonDoc(options);
 
 // add route for swagger document API
@@ -32,21 +34,21 @@ app.use('/swagger', express.static(path.join(__dirname, 'node_modules', 'swagger
 
 /* ------------------------------- middlewares ------------------------------ */
 app.use(express.json());
-//authentication
+//authentication -> individual!
 //queryHandler
 app.use(require('./src/middlewares/queryHandler'));
 
 
 /* --------------------------------- routes --------------------------------- */
 app.all('/',(req,res)=>{
-    res.send('working\'')
+    res.send('Welcome to the BS-Store Api!')
 })
 
 
 app.use('/users',require('./src/routes/userRouter')); 
 app.use('/auth',require('./src/routes/authRouter')); 
-app.use('/categories',require('./src/routes/categoryRouter')); 
-app.use('/products',require('./src/routes/productRouter')); 
+app.use('/categories',validateToken ,require('./src/routes/categoryRouter')); 
+app.use('/products',validateToken,require('./src/routes/productRouter')); 
 
 
 
@@ -81,9 +83,10 @@ app.listen(PORT,()=> console.log('Server is running on',PORT));
 //* -ok query handler sonra
 //* -ok sonra auth route controller
 //* -ok sonra token validation
-//sonra products controller route vs
-//category controller s
+//* -ok sonra products controller route vs
+//* -ok category controller s
 
 //en son neler token sitior ayarlanacak
 // bi admin koyup user get delete vs islemlerini admine verecem sadece
 
+//exprie time ayarla en son

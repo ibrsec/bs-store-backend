@@ -63,7 +63,7 @@ module.exports.productController = {
    *                   type: string
    *                   example: Products are listed!
    *                 details:
-   *                   $ref: '#/components/schemas/Details'
+   *                   $ref: '#/components/schemas/ResponseListDetails'
    *                 result:
    *                   type: array
    *                   items:
@@ -89,6 +89,7 @@ module.exports.productController = {
  *   post:
  *     summary: Create a new product
  *     description: Create a new product with the specified details. The `categoryId`, `title`, `description`, `price`, `brand`, and `thumbnail` fields are required. The other fields are optional.
+ *          </br></br>**Note:** This operation is restricted to `admin` users only.
  *     tags: [Product]
  *     requestBody:
  *       required: true
@@ -303,6 +304,7 @@ module.exports.productController = {
  *   delete:
  *     summary: Delete a product by ID
  *     description: Delete a product using its unique ID. If the product is not found or there is an issue with deletion, appropriate errors are returned.
+ *          </br></br>**Note:** This operation is restricted to `admin` users only.
  *     tags: [Product]
  *     parameters:
  *       - in: path
@@ -386,6 +388,7 @@ module.exports.productController = {
  *   put:
  *     summary: Update a product by ID
  *     description: Update a product's details using its unique ID. Required fields include `categoryId`, `title`, `description`, `price`, `brand`, and `thumbnail`. Other fields are optional.
+ *          </br></br>**Note:** This operation is restricted to `admin` users only.
  *     tags: [Product]
  *     parameters:
  *       - in: path
@@ -555,6 +558,7 @@ module.exports.productController = {
  *   patch:
  *     summary: Partially update a product by ID
  *     description: Update specific fields of a product using its unique ID. At least one field among `categoryId`, `title`, `description`, `price`, `brand`, and `thumbnail`, `discountPercentage`, `rating`, `stock`, `images` is required. Other fields are optional.
+ *          </br></br>**Note:** This operation is restricted to `admin` users only.
  *     tags: [Product]
  *     parameters:
  *       - in: path

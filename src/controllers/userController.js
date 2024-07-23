@@ -3,78 +3,80 @@
 const { User } = require("../models/userModel");
 const mongoose = require("mongoose");
 module.exports.userController = {
-/**
- * @swagger
- * /users:
- *   get:
- *     summary: List users
- *     description: 'You can use <u>filter[] & search[] & sort[] & page & limit</u> queries with the endpoint. <ul> Examples: <li>URL/?<b>filter[field1]=value1&filter[field2]=value2</b></li> <li>URL/?<b>search[field1]=value1&search[field2]=value2</b></li> <li>URL/?<b>sort[field1]=asc&sort[field2]=desc</b></li> <li>URL/?<b>limit=10&page=1</b></li> </ul>'
- *     tags: [User]
- *     parameters:
- *       - in: query
- *         name: filter[field]
- *         schema:
- *           type: string
- *         required: false
- *         description: Filter users by specific fields
- *         example: filter[name]=John&filter[age]=30
- *       - in: query
- *         name: search[field]
- *         schema:
- *           type: string
- *         required: false
- *         description: Search users by specific fields with regex
- *         example: search[email]=example@example.com
- *       - in: query
- *         name: sort[field]
- *         schema:
- *           type: string
- *         required: false
- *         description: Sort users by specific fields
- *         example: sort[name]=asc&sort[createdAt]=desc
- *       - in: query
- *         name: limit
- *         schema:
- *           type: integer
- *         required: false
- *         description: Limit the number of users returned
- *         example: 10
- *       - in: query
- *         name: page
- *         schema:
- *           type: integer
- *         required: false
- *         description: Page number to retrieve
- *         example: 1
- *     responses:
- *       200:
- *         description: Successfully listed users
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 error:
- *                   type: boolean
- *                   example: false
- *                 message:
- *                   type: string
- *                   example: Users are listed!
- *                 details:
- *                   $ref: '#/components/schemas/Details'
- *                 result:
- *                   type: array
- *                   items:
- *                     $ref: '#/components/schemas/User'
- */
+  /**
+   * @swagger
+   * /users:
+   *   get:
+   *     summary: List users
+   *     description: 'You can use <u>filter[] & search[] & sort[] & page & limit</u> queries with the endpoint. <ul> Examples: <li>URL/?<b>filter[field1]=value1&filter[field2]=value2</b></li> <li>URL/?<b>search[field1]=value1&search[field2]=value2</b></li> <li>URL/?<b>sort[field1]=asc&sort[field2]=desc</b></li> <li>URL/?<b>limit=10&page=1</b></li> </ul>
+ *          </br></br>**Note:** This operation is restricted to `admin` users only.'
+   *     tags: [User]
+   *     parameters:
+   *       - in: query
+   *         name: filter[field]
+   *         schema:
+   *           type: string
+   *         required: false
+   *         description: Filter users by specific fields
+   *         example: filter[name]=John&filter[age]=30
+   *       - in: query
+   *         name: search[field]
+   *         schema:
+   *           type: string
+   *         required: false
+   *         description: Search users by specific fields with regex
+   *         example: search[email]=example@example.com
+   *       - in: query
+   *         name: sort[field]
+   *         schema:
+   *           type: string
+   *         required: false
+   *         description: Sort users by specific fields
+   *         example: sort[name]=asc&sort[createdAt]=desc
+   *       - in: query
+   *         name: limit
+   *         schema:
+   *           type: integer
+   *         required: false
+   *         description: Limit the number of users returned
+   *         example: 10
+   *       - in: query
+   *         name: page
+   *         schema:
+   *           type: integer
+   *         required: false
+   *         description: Page number to retrieve
+   *         example: 1
+   *     responses:
+   *       200:
+   *         description: Successfully listed users
+   *         content:
+   *           application/json:
+   *             schema:
+   *               type: object
+   *               properties:
+   *                 error:
+   *                   type: boolean
+   *                   example: false
+   *                 message:
+   *                   type: string
+   *                   example: Users are listed!
+   *                 details:
+   *                   $ref: '#/components/schemas/ResponseListDetails'
+   *                 result:
+   *                   type: array
+   *                   items:
+   *                     $ref: '#/components/schemas/User'
+   */
 
   list: async (req, res) => {
     const users = await res.getListModel(User);
-
+    const isAdmin = res.userDecoded?.isAdmin; 
+    
     res.status(200).json({
       error: false,
       message: "Users are listed!",
-      details : await res.getListModelDetails(User),
+      details: await res.getListModelDetails(User),
       result: users,
     });
   },
@@ -134,17 +136,31 @@ module.exports.userController = {
    *                   example: Bad request - Email and password are required fields!
    */
   create: async (req, res) => {
-    const { email, password } = req.body;
+    const { email, password, isAdmin: isAdminBody } = req.body;
     if (!email || !password) {
       res.status(400);
       throw new Error("Bad request - Email and password are required fields!");
     }
+    if (isAdminBody) {
+      console.log("Forbidden - Admin is already exist!");
+      res.status(403);
+      throw new Error(
+        "Forbidden - Admin is already exist! Another one is not allowed!"
+      );
+    }
+    const adminUser = await User.findOne({ isAdmin: true });
+    let isAdmin = false;
 
-    const newUser = await User.create({ email, password });
+    if (!adminUser) {
+      isAdmin = true;
+      console.log("Admin user is creatation!");
+    }
+
+    const newUser = await User.create({ email, password, isAdmin });
 
     res.status(201).json({
       error: false,
-      message: "A new user is created!",
+      message: `A new ${isAdmin ? "admin " : ""}user is created!`,
       result: newUser,
     });
   },
@@ -155,6 +171,8 @@ module.exports.userController = {
    *   get:
    *     summary: Get a user by ID
    *     tags: [User]
+   *     description: 
+ *          </br></br>**Note:** This operation is restricted to `admin` users only.
    *     parameters:
    *       - in: path
    *         name: id
@@ -211,7 +229,7 @@ module.exports.userController = {
       res.status(400);
       throw new Error("Invalid Id type!");
     }
-
+    
     const user = await User.findOne({ _id: req.params.id });
     if (!user) {
       res.status(404);
@@ -231,6 +249,8 @@ module.exports.userController = {
    *   delete:
    *     summary: Delete a user by ID
    *     tags: [User]
+   *     description: 
+ *          </br></br>**Note:** This operation is restricted to `admin` users only.
    *     parameters:
    *       - in: path
    *         name: id
@@ -284,6 +304,10 @@ module.exports.userController = {
    */
 
   delete: async (req, res) => {
+   
+
+
+
     if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
       res.status(400);
       throw new Error("Invalid Id type!");
@@ -312,6 +336,8 @@ module.exports.userController = {
    *   put:
    *     summary: Update a user by ID
    *     tags: [User]
+   *     description: 
+ *          </br></br>**Note:** This operation is restricted to `admin` users only.
    *     parameters:
    *       - in: path
    *         name: id
@@ -438,6 +464,8 @@ module.exports.userController = {
    *   patch:
    *     summary: Partially update a user by ID
    *     tags: [User]
+   *     description: 
+ *          </br></br>**Note:** This operation is restricted to `admin` users only.
    *     parameters:
    *       - in: path
    *         name: id

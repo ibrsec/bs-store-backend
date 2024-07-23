@@ -110,11 +110,11 @@ module.exports.authController = {
         {
             user:{
                 id:user._id,
-                email:user.email,
+                email:user.email
             }
         },
         process.env.ACCESSTOKEN_SECRETKEY,
-        {expiresIn:'1m'}
+        {expiresIn:'1h'}
 
     )
     res.status(200).json({

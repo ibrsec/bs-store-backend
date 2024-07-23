@@ -61,7 +61,7 @@ module.exports.categoryController = {
    *                   type: string
    *                   example: Categories are listed!
    *                 details:
-   *                   $ref: '#/components/schemas/Details'
+   *                   $ref: '#/components/schemas/ResponseListDetails'
    *                 result:
    *                   type: array
    *                   items:
@@ -85,6 +85,8 @@ module.exports.categoryController = {
    *   post:
    *     summary: Create a new category
    *     tags: [Category]
+   *     description:
+   *         </br></br>**Note:** This operation is restricted to `admin` users only.
    *     requestBody:
    *       required: true
    *       content:
@@ -227,6 +229,7 @@ module.exports.categoryController = {
  *   delete:
  *     summary: Delete a category
  *     description: Delete a category by its ID.
+ *         </br></br>**Note:** This operation is restricted to `admin` users only.
  *     tags: [Category]
  *     parameters:
  *       - in: path
@@ -307,6 +310,7 @@ module.exports.categoryController = {
  *   put:
  *     summary: Update a category
  *     description: Update a category's name by its ID.
+ *         </br></br>**Note:** This operation is restricted to `admin` users only.
  *     tags: [Category]
  *     parameters:
  *       - in: path
@@ -421,13 +425,14 @@ module.exports.categoryController = {
     });
   },
 
-  /**
+  /** 
  * @swagger
  * /categories/{id}:
  *   patch:
  *     summary: Partially update a user by ID
  *     description: Update a category's name by its ID.
- *     tags: [Category]
+ *         </br></br>**Note:** This operation is restricted to `admin` users only.
+ *     tags: [Category] 
  *     parameters:
  *       - in: path
  *         name: id
