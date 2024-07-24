@@ -51,11 +51,7 @@ app.use(express.json());
 //queryHandler
 app.use(require('./src/middlewares/queryHandler'));
  
-app.use(cors({
-    origin: 'http://localhost:3000', // allow requests from all origins
-    methods: ['GET', 'POST', 'PUT', 'DELETE'], // allow these methods
-    allowedHeaders: ['Content-Type', 'Authorization'] // allow these headers
-  })) //cors
+app.use(cors()) //cors
 
 /* --------------------------------- routes --------------------------------- */
 app.all('/',(req,res)=>{
