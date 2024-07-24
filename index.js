@@ -12,7 +12,7 @@ require('dotenv').config();
 // const swaggerUi = require("swagger-ui-express");
 const path = require('path');
 const validateToken = require('./src/middlewares/validateTokenHandler');
-
+const cors = require('cors')
 
 /* ----------------------------------- app ---------------------------------- */
 const app = express();
@@ -51,6 +51,11 @@ app.use(express.json());
 //queryHandler
 app.use(require('./src/middlewares/queryHandler'));
  
+app.use(cors({
+    origin: 'http://localhost:3000', // allow requests from all origins
+    methods: ['GET', 'POST', 'PUT', 'DELETE'], // allow these methods
+    allowedHeaders: ['Content-Type', 'Authorization'] // allow these headers
+  })) //cors
 
 /* --------------------------------- routes --------------------------------- */
 app.all('/',(req,res)=>{

@@ -6,7 +6,7 @@ const validatePassword = require("../helpers/validatePassword");
 module.exports.authController = {
     /**
  * @swagger
- * /login:
+ * /auth/login:
  *   post:
  *     summary: User login
  *     tags: [Auth]
@@ -131,7 +131,7 @@ module.exports.authController = {
 
   /**
  * @swagger
- * /logout:
+ * /auth/logout:
  *   post:
  *     summary: User logout
  *     tags: [Auth]
@@ -161,7 +161,7 @@ module.exports.authController = {
 
   /**
  * @swagger
- * /current:
+ * /auth/current:
  *   get:
  *     summary: Get current user
  *     tags: [Auth]
