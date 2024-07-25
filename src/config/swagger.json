@@ -16,7 +16,7 @@
     },
     "servers": [
       {
-        "url": "https://b-store-backend.vercel.app/"
+        "url": "https://bs-store-backend.vercel.app/"
       }
     ],
     "components": {
