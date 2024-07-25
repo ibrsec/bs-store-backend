@@ -114,7 +114,7 @@ module.exports.authController = {
             }
         },
         process.env.ACCESSTOKEN_SECRETKEY,
-        {expiresIn:'1h'}
+        {expiresIn:'3h'}
 
     )
     res.status(200).json({
@@ -123,7 +123,8 @@ module.exports.authController = {
         result:{
             accessToken,
             user_id:user._id,
-            user_email:user.email
+            user_email:user.email,
+            isAdmin:user.isAdmin
         }
     })
 

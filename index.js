@@ -1,7 +1,7 @@
 "use strict";
 
 
-
+ 
 
 /* --------------------------------- imports -------------------------------- */
 const express =require('express')
@@ -44,7 +44,7 @@ app.use('/swagger', express.static(path.join(__dirname, 'node_modules', 'swagger
 
 
 
-
+  
 /* ------------------------------- middlewares ------------------------------ */
 app.use(express.json());
 //authentication -> individual!
@@ -92,3 +92,8 @@ app.listen(PORT,()=> console.log('Server is running on',PORT));
 //* -ok bi admin koyup user get delete vs islemlerini admine verecem sadece
 
 //* -ok exprie time ayarla en son
+
+
+ 
+
+// require('./sync2')() 

@@ -170,9 +170,7 @@ module.exports.userController = {
    * /users/{id}:
    *   get:
    *     summary: Get a user by ID
-   *     tags: [User]
-   *     description: 
- *          </br></br>**Note:** This operation is restricted to `admin` users only.
+   *     tags: [User] 
    *     parameters:
    *       - in: path
    *         name: id

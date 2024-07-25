@@ -318,7 +318,7 @@ module.exports.productController = {
       throw new Error("Invalid Id type!");
     }
 
-    const product = await Product.findOne({ _id: req.params.id });
+    const product = await Product.findOne({ _id: req.params.id }).populate('categoryId');
     if (!product) {
       res.status(404);
       throw new Error("Product not found!");

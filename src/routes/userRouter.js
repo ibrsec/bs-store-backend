@@ -11,7 +11,7 @@ router
   .post(userController.create);
 router
   .route("/:id")
-  .get(validateToken, adminAuthentication, userController.read)
+  .get(validateToken, userController.read)
   .delete(validateToken,adminAuthentication, userController.delete)
   .put(validateToken, adminAuthentication, userController.update)
   .patch(validateToken, adminAuthentication, userController.patchUpdate);
