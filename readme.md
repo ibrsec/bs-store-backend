@@ -99,7 +99,7 @@
 <a name="overview"></a>
 ## 👀 Overview
 
-📦 Backend of the    <a href="https://github.com/ibrsec/bs-store-front">bs-store-frontend</a> project  for store store data </br>
+📦 Backend of the    <a href="https://github.com/ibrsec/bs-store-front">bs-store-frontend</a> project  for store data </br>
 🎯 Used express, dotenv, express-async-errors,jsonwebtoken, mongoose, swagger-jsdoc, swagger-ui-express,cors </br>
 🖥 MongoDb is used as db </br>
 🔩 Jwt token authentication is use for authorization an authentication operations </br>
