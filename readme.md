@@ -1,1 +1,1 @@
-swagger : https://b-store-backend.vercel.app/api-doc
+swagger : https://bs-store-backend.vercel.app/api-doc/
