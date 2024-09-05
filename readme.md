@@ -9,7 +9,7 @@
    
   <a href="https://bs-store-backend.vercel.app/api-doc/">
     <img src="./src/assets/logo.png" alt="Logo" width="250"   >
-  </a>
+  </a> 
 
   <h3 align="center">BS Store backend | Fullstack</h3>
 
